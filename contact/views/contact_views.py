@@ -1,9 +1,14 @@
 #importando o biblioteca get_objetct_or_400 para criar uma exceção para o erro de página não encontrada
-from django.shortcuts import get_object_or_404, render
+#importando o redirect para ser utilizado na view seach, caso um usuario procure algo que não existe será redirecionado para o index
+from django.shortcuts import get_object_or_404, render, redirect
 #importando a classe contact criada la no arquivo models
 from contact.models import contact
 #importando a biblioteca para adicionar uma exceção para o erro 404, mesma coisa do get_object_or_404
 from django.http import Http404
+#importando a função Q para fazer o comparativo do OU na view de busca
+from django.db.models import Q
+
+##################################################################################################
 
 
 def index(request):
@@ -15,12 +20,15 @@ def index(request):
     #criando uma váriavel para usar no render como contexto
     context = {
         'contacts_chave' : contacts,
+        'site_nome' : 'Contatos - '
     }
 
     return render(request,
                 'contact/index.html',
                 context,
                 )
+
+##################################################################################################
 
 def contatos(request, contact_id):
 
@@ -33,10 +41,42 @@ def contatos(request, contact_id):
 # Criando uma outra forma para criar a exceção do erro 404
     single_contact = get_object_or_404(contact.objects, pk=contact_id, show=True)
 
+    site_nome = f'{single_contact.first_name} {single_contact.last_name} - '
+
     context = {
         'pagina_contato' : single_contact,
+        'site_nome' : site_nome
     }
     return render(request,
                 'contact/contact.html',
+                context,
+                )
+##################################################################################################
+
+#Criando uma view para campo de pesquisa do site
+def search(request):
+
+    search_value = request.GET.get('q','').strip()
+
+#utilizando o redirect para caso o usuario digite nenhum caracter, ele sere redirecionado para o index
+    if search_value == '':
+        return redirect('contact:index')
+    
+    #utilizando a função Q para procurar itens no campo search utilizando o OR 
+
+    contacts = contact.objects.filter(show=True).filter(Q(first_name__icontains=search_value) |
+                                                        Q(last_name__icontains=search_value)|
+                                                        Q(phone__icontains=search_value)|
+                                                        Q(email__icontains=search_value)
+                                                        ).order_by('-id')
+
+    #criando uma váriavel para usar no render como contexto
+    context = {
+        'contacts_chave' : contacts,
+        'site_nome' : 'Search - '
+    }
+
+    return render(request,
+                'contact/index.html',
                 context,
                 )
