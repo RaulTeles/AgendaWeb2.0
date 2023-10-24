@@ -1,48 +1,55 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<div class="responsive-table">
-        <table class="contacts-table">
-            <!-- titulo da tabela -->
-            <caption class="table-caption">
-                Contacts
-            </caption>
-            <!-- Linha do cabeçalho da tabela -->
-            <thead>
-                <tr class="table-row table-row-header">
-                    <th class="table-header">ID</th>
-                    <th class="table-header">First Name</th>
-                    <th class="table-header">Last Name</th>
-                    <th class="table-header">Phone</th>
-                    <th class="table-header">Email</th>
-                </tr>
-            </thead>
-            <!-- Corpo da tabela -->
-            <tbody>
-                {% comment %} Criando uma váriavel contact para incrementar na contacts_chave criada no dicionario do retorno do render na views {% endcomment %}
-                {% for contact in contacts_chave %}
-                    <tr class="table-row">
-                        <td class="table-cel">
-                        <a href="{% url 'contact:contatos' contact.id %}" class="table-link">
-                            {{contact.id}}
-                        </a>
-                        </td>
-                        <td class="table-cel">
-                            {{contact.first_name}}
-                        </td>
-                        <td class="table-cel">
-                            {{contact.last_name}}
-                        </td>
-                        <td class="table-cel">
-                            {{contact.phone}}
-                        </td>
-                        <td class="table-cel">
-                            {{contact.email}}
-                        </td>
+{% if contacts_chave %}
+    <div class="responsive-table">
+            <table class="contacts-table">
+                <!-- titulo da tabela -->
+                <caption class="table-caption">
+                    Contacts
+                </caption>
+                <!-- Linha do cabeçalho da tabela -->
+                <thead>
+                    <tr class="table-row table-row-header">
+                        <th class="table-header">ID</th>
+                        <th class="table-header">First Name</th>
+                        <th class="table-header">Last Name</th>
+                        <th class="table-header">Phone</th>
+                        <th class="table-header">Email</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <!-- Corpo da tabela -->
+                <tbody>
+                    {% comment %} Criando uma váriavel contact para incrementar na contacts_chave criada no dicionario do retorno do render na views {% endcomment %}
+                    {% for contact in contacts_chave %}
+                        <tr class="table-row">
+                            <td class="table-cel">
+                            <a href="{% url 'contact:contatos' contact.id %}" class="table-link">
+                                {{contact.id}}
+                            </a>
+                            </td>
+                            <td class="table-cel">
+                                {{contact.first_name}}
+                            </td>
+                            <td class="table-cel">
+                                {{contact.last_name}}
+                            </td>
+                            <td class="table-cel">
+                                {{contact.phone}}
+                            </td>
+                            <td class="table-cel">
+                                {{contact.email}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+{% else %}
+<div class="sigle-contact">
+    <h1 class="single-contact-name">
+        Nenhum contato encontrado!
+    </h1>
+</div>
+{% endif %}
 {% endblock content %}
