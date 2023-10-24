@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="sigle-contact">
+        <h1 class="single-contact-name">
+            {{pagina_contato.first_name}} {{pagina_contato.last_name}}
+        </h1>
+            <p>
+                <b>ID: </b>
+                {{pagina_contato.id}}
+            </p>
+            <p>
+                <b>E-MAIL: </b>
+                {{pagina_contato.email}}
+            </p>
+            <p>
+                <b>PHONE: </b>
+                {{pagina_contato.phone}}
+            </p>
+            <p>
+                <b>CREATED DATE: </b>
+                {{pagina_contato.created_date}}
+            </p>
+            <p>
+                <b>DESCRIPTION:</b>
+                {{pagina_contato.description}}
+            </p>
+            <p>
+                <b>CATEGORY: </b>
+                {{pagina_contato.category}}
+            </p>
+    </div>
+
+{% endblock content %}
