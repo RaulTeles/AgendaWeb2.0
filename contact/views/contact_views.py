@@ -7,6 +7,9 @@ from contact.models import contact
 from django.http import Http404
 #importando a função Q para fazer o comparativo do OU na view de busca
 from django.db.models import Q
+#importando a função Paginator para criar uma paginação no site
+from django.core.paginator import Paginator
+
 
 ##################################################################################################
 
@@ -17,9 +20,14 @@ def index(request):
     #filtrando os contatos que o campo show está como Verdadeiro
     contacts = contact.objects.filter(show=True).order_by('-id')
 
+    #criando o paginator nos index
+    paginator = Paginator(contacts,10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     #criando uma váriavel para usar no render como contexto
     context = {
-        'contacts_chave' : contacts,
+        'page_obj' : page_obj,
         'site_nome' : 'Contatos - '
     }
 
@@ -69,10 +77,15 @@ def search(request):
                                                         Q(phone__icontains=search_value)|
                                                         Q(email__icontains=search_value)
                                                         ).order_by('-id')
+    
+    
+    paginator = Paginator(contacts,10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
 
     #criando uma váriavel para usar no render como contexto
     context = {
-        'contacts_chave' : contacts,
+        'page_obj' : page_obj,
         'site_nome' : 'Search - '
     }
 
