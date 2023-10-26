@@ -6,14 +6,22 @@
 
     <h2>Contato</h2>
 
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form action="{% url "contact:create" %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="form-content">
-            <div class="form-group">
-                <label for="id_first_name">LABEL</label>
-                <input type="text" name="first_name" maxlength="255" id="id_first_name">
+
+        {% comment %} Pegando dados do formulario {% endcomment %}
+
+            <div class="form-content">
+                {% for field in form %}
+                {% comment %} configurando o formulário dinamicamente  {% endcomment %}
+                <div class="form-group">
+                    <label for="{{field_id_for_label}}">{{field.label}}</label>
+                    {{field}}
+                    {{field.errors}}
+                </div>
+                {% endfor %}
             </div>
-        </div>
+
 
         <div class="form-content">
             <div class="form-group">
