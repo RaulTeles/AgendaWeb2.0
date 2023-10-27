@@ -17,17 +17,27 @@
                 <div class="form-group">
                     <label for="{{field_id_for_label}}">{{field.label}}</label>
                     {{field}}
+                    {% comment %} adicionando o método .erros para capturar e mostrar os erros  {% endcomment %}
                     {{field.errors}}
                 </div>
                 {% endfor %}
             </div>
 
-
+            <!-- Verificando se existe erro Nonfilde, que é um erro de algum lugar na página. -->
+        {% if form.non_field_errors %}
+            <div class="form-content">    
+                <div class="form-group">
+                    <div class="message error">
+                        {{form.non_field_errors}}
+                    </div>
+                </div>
+            </div> 
+        {% endif %}
         <div class="form-content">
             <div class="form-group">
                 <button class="btn" type="submit">Send</button>
             </div>
-        </div>
+        </div> 
 
     </form>
 </div>

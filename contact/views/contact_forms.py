@@ -1,5 +1,4 @@
 # Criando o metodo contact_forms para criação de views com função de criar coisas, seguindo o modelo do CRUD
-
 #importando o biblioteca get_objetct_or_400 para criar uma exceção para o erro de página não encontrada
 #importando o redirect para ser utilizado na view seach, caso um usuario procure algo que não existe será redirecionado para o index
 from django.shortcuts import get_object_or_404, render, redirect
@@ -14,31 +13,8 @@ from django.core.paginator import Paginator
 #importando a biblioca form para utilização das classes
 from django import forms
 from django.core.exceptions import ValidationError
-
-
-##################################################################################################
-
-#Criando uma classe para os formulários
-#passando o parametro ModelForm, pq o formulário vai ser criado em base aos models já existentes
-
-class contactForms(forms.ModelForm):
-    class Meta:
-        #definindo qual é model em que o formulário será criado
-        model = contact
-        #definindo quais campos serão exibidos nos forms
-        fields = ('first_name','last_name','phone')
-    
-    def clean(self):
-        cleaned_data = self.cleaned_data
-
-        self.add_error(
-            'first_name',
-            ValidationError(
-                'Mensagem de error',
-                code='invalid'
-            )
-        )
-
+#importando a classe do fomulário no arquivo form
+from contact.forms import contactForms
 
 
 def create(request):
