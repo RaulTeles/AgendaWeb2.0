@@ -4,26 +4,34 @@
 from django.shortcuts import get_object_or_404, render, redirect
 #importando a classe contact criada la no arquivo models
 from contact.models import contact
-#importando a biblioteca para adicionar uma exceção para o erro 404, mesma coisa do get_object_or_404
-from django.http import Http404
-#importando a função Q para fazer o comparativo do OU na view de busca
-from django.db.models import Q
-#importando a função Paginator para criar uma paginação no site
-from django.core.paginator import Paginator
-#importando a biblioca form para utilização das classes
-from django import forms
-from django.core.exceptions import ValidationError
 #importando a classe do fomulário no arquivo form
 from contact.forms import contactForms
+#importando a função reverse, para deixar a url do post dinamica
+from django.urls import reverse
 
 
 def create(request):
 
+    form_action = reverse('contact:create')
+
     if request.method == 'POST':
+
+        formulario = contactForms(request.POST)
+
         context = {
         #passando o formulário no contexto para poder ser mostrado no html
-        'form' : contactForms(request.POST),
+        'form' : formulario,
+        'form_action' : form_action
         }
+
+        #veiricando se o formato é válido para salvar o formulário criado
+
+        if formulario.is_valid():
+            contato = formulario.save()
+
+            #fazendo uma requisição para quando o relatorio for enviado, a página seja atualizada para os nomes não ficarem nos campos
+            return redirect('contact:update',contact_id=contato.pk)
+
 
 
         return render(request,
@@ -36,7 +44,52 @@ def create(request):
     context = {
         #passando o formulário no contexto para poder ser mostrado no html
         'form' : contactForms(),
+        'form_action' : form_action
 
+    }
+
+    return render(request,
+                'contact/create.html',
+                context,
+                )
+
+
+
+def update(request, contact_id):
+    
+    contato = get_object_or_404(contact,pk=contact_id,show=True)
+
+    form_action = reverse('contact:update', args=(contact_id,))
+
+    if request.method == 'POST':
+
+        formulario = contactForms(request.POST, instance=contato)
+
+        context = {
+        #passando o formulário no contexto para poder ser mostrado no html
+        'form' : formulario,
+        'form_action' : form_action
+        }
+
+        #veiricando se o formato é válido para salvar o formulário criado
+
+        if formulario.is_valid():
+            contato = formulario.save()
+
+            #fazendo uma requisição para quando o relatorio for enviado, a página seja atualizada para os nomes não ficarem nos campos
+            return redirect('contact:update',contact_id=contato.pk)
+
+
+
+        return render(request,
+            'contact/create.html',
+            context,
+            )
+
+    context = {
+        #passando o formulário no contexto para poder ser mostrado no html
+        'form' : contactForms(instance=contato),
+        'form_action' : form_action,
     }
 
     return render(request,

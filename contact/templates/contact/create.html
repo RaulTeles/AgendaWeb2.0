@@ -6,7 +6,8 @@
 
     <h2>Contato</h2>
 
-    <form action="{% url "contact:create" %}" method="POST" enctype="multipart/form-data">
+    {% comment %} colocanod uma variavel no post para dixar a url dinamica {% endcomment %}
+    <form action="{{form_action}}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
         {% comment %} Pegando dados do formulario {% endcomment %}

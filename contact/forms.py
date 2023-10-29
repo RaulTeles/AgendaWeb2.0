@@ -51,7 +51,7 @@ class contactForms(forms.ModelForm):
         #definindo qual é model em que o formulário será criado
         model = contact
         #definindo quais campos serão exibidos nos forms
-        fields = ('first_name','last_name','phone')
+        fields = ('first_name','last_name','phone','email','description','category')
 
         #criando um widget no formulário (personalizando os campos)
 
