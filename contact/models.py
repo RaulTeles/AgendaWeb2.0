@@ -34,7 +34,8 @@ class contact(models.Model):
     last_name = models.CharField(max_length=20)
     
     #criando uma string para telefone tipo string
-    phone = models.CharField(max_length=15)
+    #adicionando o verbose name para poder alterar na exibição da pagina
+    phone = models.CharField(max_length=15,verbose_name='Telefone')
     
     #criando um campo de email especifico para o email | o parametro blank= True é para deixar o campo como opcional.
     email = models.EmailField(max_length=254, blank=True)

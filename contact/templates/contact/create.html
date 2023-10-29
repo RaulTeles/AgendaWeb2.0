@@ -19,6 +19,12 @@
                     {{field}}
                     {% comment %} adicionando o método .erros para capturar e mostrar os erros  {% endcomment %}
                     {{field.errors}}
+
+                    {% comment %} Se o field tiver helptext e personalizando{% endcomment %}
+
+                    {% if field.help_text %}
+                        <p class="help-text">{{field.help_text}}</p>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
