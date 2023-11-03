@@ -297,11 +297,12 @@
     color: var(--clr-white);
     font-weight: bold;
     border: none;
-    padding: 1rem 2rem;
+    padding: 1rem 3rem;
     border-radius: var(--default-border-radius);
     cursor: pointer;
     transition: filter var(--transition-fast) ease-in-out;
   }
+
   
   .btn:hover {
     filter: brightness(90%);
@@ -313,3 +314,26 @@
     box-shadow: 0 0 5px var(--link-dark-color);
   }
   
+.contact-links {
+  margin-block: calc(var(--small-font-size) * 2);
+  display: flex;
+  align-items: center;
+  gap: 0 var(--spacing);
+}
+
+.btn-link {
+  font-size: var(--small-font-size);
+  text-decoration: none;
+  font-weight: bold;
+  padding: 1rem;
+  display: block;
+  line-height: var(--small-font-size);
+}
+
+.btn-delete {
+  background: tomato;
+}
+
+.btn-confirmar {
+  background: black;
+}

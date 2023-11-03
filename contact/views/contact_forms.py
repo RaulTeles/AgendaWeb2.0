@@ -96,3 +96,19 @@ def update(request, contact_id):
                 'contact/create.html',
                 context,
                 )
+
+def delete(request,contact_id):
+    contato = get_object_or_404(contact,pk=contact_id,show=True)
+
+    confirmation = request.POST.get('confirmation', 'no')
+    if confirmation == 'yes':
+        contato.delete()
+        return redirect('contact:index')
+
+    return render(request,
+                'contact/contact.html',
+                {
+                    'pagina_contato' : contato,
+                    'confirmation' : confirmation,
+                }
+                )
