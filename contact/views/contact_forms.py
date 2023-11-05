@@ -16,7 +16,7 @@ def create(request):
 
     if request.method == 'POST':
 
-        formulario = contactForms(request.POST)
+        formulario = contactForms(request.POST, request.FILES)
 
         context = {
         #passando o formulário no contexto para poder ser mostrado no html
@@ -63,7 +63,7 @@ def update(request, contact_id):
 
     if request.method == 'POST':
 
-        formulario = contactForms(request.POST, instance=contato)
+        formulario = contactForms(request.POST, request.FILES, instance=contato)
 
         context = {
         #passando o formulário no contexto para poder ser mostrado no html

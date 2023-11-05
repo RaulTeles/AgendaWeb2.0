@@ -20,6 +20,10 @@ urlpatterns = [
     path('contato/<int:contact_id>/update', views.update, name='update'), #update
     
     path('contato/<int:contact_id>/delete', views.delete, name='delete'), #delete
+
+    #url de resgistro
+    path('user/create/', views.register, name='register'), #Create
+
 ]
 
 #informando o caminho da pasta media onde contém os arquivos

@@ -28,6 +28,11 @@
                 <b>CATEGORY: </b>
                 {{pagina_contato.category}}
             </p>
+            {% if pagina_contato.picture %}
+                <p>
+                    <img src="{{ pagina_contato.picture.url }}" alt="{{pagina_contato.first_name}} {{pagina_contato.last_name}}">
+                </p>
+            {% endif %}
 
             <div class="contact-links">
                 <a class="btn btn-link" href="{% url 'contact:update' pagina_contato.id %}">Atualizar</a>

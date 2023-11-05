@@ -6,6 +6,10 @@ from contact.models import contact
 
 #importando a biblioca form para utilização das classes
 from django import forms
+#importando o model padrão do djagno USER  para usar os campos 
+from django.contrib.auth.models import User
+
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
 
@@ -17,6 +21,15 @@ from django.core.exceptions import ValidationError
 class contactForms(forms.ModelForm):
 
     #criando uma outra forma de widget, necessário criar um campo já existente
+    #widget basicamente é para alterar o html, porem utilizando o django
+
+    picture = forms.ImageField(
+        widget=forms.FileInput(
+            attrs={
+                'accept' : 'image/*',
+            }
+        )
+    )
 
     first_name = forms.CharField(
         widget=forms.TextInput(
@@ -36,8 +49,8 @@ class contactForms(forms.ModelForm):
     )
 
     #criando um init e passando o args e o kwargs, pois não pretendo passar a quantidade de argumentos,
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
 
     # #Criando outra forma para usar os widget        
     #     self.fields['first_name'].widget.attrs.update(
@@ -51,7 +64,7 @@ class contactForms(forms.ModelForm):
         #definindo qual é model em que o formulário será criado
         model = contact
         #definindo quais campos serão exibidos nos forms
-        fields = ('first_name','last_name','phone','email','description','category')
+        fields = ('first_name','last_name','phone','email','description','category','picture')
 
         #criando um widget no formulário (personalizando os campos)
 
@@ -101,3 +114,44 @@ class contactForms(forms.ModelForm):
             
         return first_name
         
+class RegisterForm(UserCreationForm):
+
+    #criando widget para adicinar os campos obrigatorios
+
+    first_name = forms.CharField(
+        required=True,
+        min_length=3,
+    )
+    last_name = forms.CharField(
+        required=True,
+        min_length=3,
+    )
+    email = forms.EmailField(
+        required=True
+    )
+
+    
+    class Meta:
+        model = User
+        #informando os fiels (são tuplas)
+        fields = ('first_name',
+                'last_name',
+                'email',
+                'username',
+                'password1',
+                'password2')
+        
+    #criando um método clean_email para garantir que não vai ter usuários com emails repetidos
+
+    def clean_email(self):
+
+        email = self.cleaned_data.get('email')
+
+        #checando se já tem usuário na base de dados
+        if User.objects.filter(email=email).exists():
+            self.add_error(
+                'email',
+                ValidationError('Já existe esse E-mail', code='invalid')
+            )
+
+        return email
