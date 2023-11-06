@@ -6,46 +6,6 @@
 
     <h2>Register</h2>
 
-    {% comment %} colocanod uma variavel no post para dixar a url dinamica {% endcomment %}
-    <form action="{{form_action}}" method="POST">
-        {% csrf_token %}
-
-        {% comment %} Pegando dados do formulario {% endcomment %}
-
-            <div class="form-content">
-                {% for field in form %}
-                {% comment %} configurando o formulário dinamicamente  {% endcomment %}
-                <div class="form-group">
-                    <label for="{{field_id_for_label}}">{{field.label}}</label>
-                    {{field}}
-                    {% comment %} adicionando o método .erros para capturar e mostrar os erros  {% endcomment %}
-                    {{field.errors}}
-                    {% comment %} Se o field tiver helptext e personalizando{% endcomment %}
-
-                    {% if field.help_text %}
-                        <p class="help-text">{{field.help_text}}</p>
-                    {% endif %}
-                </div>
-                {% endfor %}
-
-            </div>
-
-            <!-- Verificando se existe erro Nonfilde, que é um erro de algum lugar na página. -->
-        {% if form.non_field_errors %}
-            <div class="form-content">    
-                <div class="form-group">
-                    <div class="message error">
-                        {{form.non_field_errors}}
-                    </div>
-                </div>
-            </div> 
-        {% endif %}
-        <div class="form-content">
-            <div class="form-group">
-                <button class="btn" type="submit">Send</button>
-            </div>
-        </div> 
-
-    </form>
+    {% include "contact/partials/_user-forms.html" %}
 </div>
 {% endblock content %}

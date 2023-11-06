@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Criação do Contato</h1>
+<div class="form-wrapper">
+
+    <h2>Login</h2>
+
+    {% if user.is_authenticated %}
+        <p>Você fez login como {{user.username}}!
+
+            Clique <a href="{% url "contact:logout_view" %}"> aqui</a> para sair!
+        </p>
+
+    {% else %}
+        {% include "contact/partials/_user-forms.html" %}
+    {% endif %}
+
+    
+</div>
+{% endblock content %}

@@ -23,6 +23,8 @@ urlpatterns = [
 
     #url de resgistro
     path('user/create/', views.register, name='register'), #Create
+    path('user/login/', views.login_view, name='login_view'), #Create
+    path('user/logout/', views.logout_view, name='logout_view'), #Create
 
 ]
 
