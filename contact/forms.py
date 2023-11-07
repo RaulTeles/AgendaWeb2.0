@@ -8,9 +8,9 @@ from contact.models import contact
 from django import forms
 #importando o model padrão do djagno USER  para usar os campos 
 from django.contrib.auth.models import User
-
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
+from django.contrib.auth import password_validation
 
 
 ##################################################################################################
@@ -155,3 +155,44 @@ class RegisterForm(UserCreationForm):
             )
 
         return email
+
+class RegisterUpdateForm(forms.ModelForm):
+
+    first_name = forms.CharField(
+        min_length=2,
+        max_length=30,
+        required=True,
+        help_text='Required.',
+        error_messages={
+            'min_length': 'Please, add more than 2 letters.'
+        }
+    )
+    last_name = forms.CharField(
+        min_length=2,
+        max_length=30,
+        required=True,
+        help_text='Required.'
+    )
+
+    password1 = forms.CharField(
+        label="Password",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        help_text=password_validation.password_validators_help_text_html(),
+        required=False,
+    )
+
+    password2 = forms.CharField(
+        label="Password 2",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        help_text='Use the same password as before.',
+        required=False,
+    )
+    class Meta:
+        model = User
+        fields = ('first_name',
+                'last_name',
+                'email',
+                'username',
+                )

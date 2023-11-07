@@ -1,6 +1,6 @@
 #importando a função redirect para utilizar quando houver a criação do usuário
 from django.shortcuts import render, redirect
-from contact.forms import RegisterForm
+from contact.forms import RegisterForm, RegisterUpdateForm
 #importando uma função para enviar mensagens na página web, importando o auth para usar o método login para confirmar o login no formulario
 from django.contrib import messages, auth
 #importando função do django para criação de autenticação para fazer o login
@@ -56,3 +56,32 @@ def logout_view(request):
 
     messages.success(request, 'Você fez o logout!')
     return redirect('contact:login_view')
+
+def user_update(request):
+
+    #o paramentro instance passado é para pegar as informações do usuário logado no momento
+    formulario = RegisterUpdateForm(instance=request.user)
+
+    if request.method != 'POST':
+        return render(request,
+                    'contact/register.html',
+                    {
+                        'form' : formulario,
+                    })
+        
+    formulario = RegisterUpdateForm(data=request.POST, instance=request.user)
+
+    if not formulario.is_valid():
+        return render(request,
+            'contact/register.html',
+            {
+                'form' : formulario,
+            })
+    
+    formulario.save()
+
+    return render(request,
+                'contact/register.html',
+                {
+                    'form' : formulario,
+                })
