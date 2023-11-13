@@ -8,8 +8,9 @@ from contact.models import contact
 from contact.forms import contactForms
 #importando a função reverse, para deixar a url do post dinamica
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='contact:login_view')
 def create(request):
 
     form_action = reverse('contact:create')
@@ -27,7 +28,10 @@ def create(request):
         #veiricando se o formato é válido para salvar o formulário criado
 
         if formulario.is_valid():
-            contato = formulario.save()
+            #criando um uwner (um dono) para cada contato
+            contato = formulario.save(commit=False)
+            contato.owner = request.user
+            contato.save()
 
             #fazendo uma requisição para quando o relatorio for enviado, a página seja atualizada para os nomes não ficarem nos campos
             return redirect('contact:update',contact_id=contato.pk)
@@ -54,10 +58,10 @@ def create(request):
                 )
 
 
-
+@login_required(login_url='contact:login_view')
 def update(request, contact_id):
     
-    contato = get_object_or_404(contact,pk=contact_id,show=True)
+    contato = get_object_or_404(contact,pk=contact_id,show=True, owner=request.user)
 
     form_action = reverse('contact:update', args=(contact_id,))
 
@@ -96,9 +100,9 @@ def update(request, contact_id):
                 'contact/create.html',
                 context,
                 )
-
+@login_required(login_url='contact:login_view')
 def delete(request,contact_id):
-    contato = get_object_or_404(contact,pk=contact_id,show=True)
+    contato = get_object_or_404(contact,pk=contact_id,show=True, owner=request.user)
 
     confirmation = request.POST.get('confirmation', 'no')
     if confirmation == 'yes':

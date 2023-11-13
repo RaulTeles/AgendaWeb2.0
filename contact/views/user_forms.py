@@ -5,6 +5,9 @@ from contact.forms import RegisterForm, RegisterUpdateForm
 from django.contrib import messages, auth
 #importando função do django para criação de autenticação para fazer o login
 from django.contrib.auth.forms import AuthenticationForm
+#importando o decorator para deixar a view acessivel apaenas para quem estiver logado
+from django.contrib.auth.decorators import login_required
+
 
 
 def register(request):
@@ -49,6 +52,7 @@ def login_view(request):
                 'form' : login,
             })
 
+@login_required(login_url='contact:login_view')
 def logout_view(request):
 
     auth.logout(request)
@@ -56,6 +60,7 @@ def logout_view(request):
     messages.success(request, 'Você fez o logout!')
     return redirect('contact:login_view')
 
+@login_required(login_url='contact:login_view')
 def user_update(request):
     form = RegisterUpdateForm(instance=request.user)
 

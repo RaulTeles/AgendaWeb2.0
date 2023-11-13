@@ -24,6 +24,7 @@ class contactForms(forms.ModelForm):
     #widget basicamente é para alterar o html, porem utilizando o django
 
     picture = forms.ImageField(
+        required=False,
         widget=forms.FileInput(
             attrs={
                 'accept' : 'image/*',
