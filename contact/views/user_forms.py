@@ -13,13 +13,12 @@ def register(request):
 
     #vailidando o tipo de requisão para POST para confirmar a criação do usuário
     if request.method == 'POST':
-        formulario = RegisterForm(request.POST,)
+        formulario = RegisterForm(request.POST)
 
         if formulario.is_valid():
             formulario.save()
             messages.success(request,'Usuário criado com sucesso!')
             return redirect('contact:index')
-
 
     #o formulário de criação de conta está associado a função UserCreationForm importada no arquivo forms.py
     return render(request,
@@ -58,30 +57,27 @@ def logout_view(request):
     return redirect('contact:login_view')
 
 def user_update(request):
-
-    #o paramentro instance passado é para pegar as informações do usuário logado no momento
-    formulario = RegisterUpdateForm(instance=request.user)
+    form = RegisterUpdateForm(instance=request.user)
 
     if request.method != 'POST':
-        return render(request,
-                    'contact/register.html',
-                    {
-                        'form' : formulario,
-                    })
-        
-    formulario = RegisterUpdateForm(data=request.POST, instance=request.user)
-
-    if not formulario.is_valid():
-        return render(request,
-            'contact/register.html',
+        return render(
+            request,
+            'contact/user_update.html',
             {
-                'form' : formulario,
-            })
-    
-    formulario.save()
+                'form': form
+            }
+        )
 
-    return render(request,
-                'contact/register.html',
-                {
-                    'form' : formulario,
-                })
+    form = RegisterUpdateForm(data=request.POST, instance=request.user)
+
+    if not form.is_valid():
+        return render(
+            request,
+            'contact/user_update.html',
+            {
+                'form': form
+            }
+        )
+
+    form.save()
+    return redirect('contact:user_update')

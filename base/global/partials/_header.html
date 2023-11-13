@@ -6,9 +6,26 @@
     </h1>
     <nav class="menu">
         <ul class="menu-list">
+            {% if user.is_authenticated %}
             <li class="menu-item">
                 <a href="{% url "contact:create" %}" class="menu-link">
                     Create
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{% url "contact:user_update"%}" class="menu-link">
+                    Profile
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{% url "contact:logout_view"%}" class="menu-link">
+                    Logout
+                </a>
+            </li>
+            {% else %}
+            <li class="menu-item">
+                <a href="{% url "contact:login_view"%}" class="menu-link">
+                    Login
                 </a>
             </li>
             <li class="menu-item">
@@ -16,6 +33,7 @@
                     Register
                 </a>
             </li>
+            {% endif %}
         </ul>
     </nav>
     <div class="search">
